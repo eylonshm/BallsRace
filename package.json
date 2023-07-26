@@ -1,0 +1,17 @@
+{
+  "name": "ballsgametsoop",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "author": "Eylon Shmilovich",
+  "license": "ISC",
+  "dependencies": {
+    "@parcel/watcher": "^2.2.0",
+    "parcel": "^2.9.3",
+    "parcel-bundler": "^1.12.5"
+  }
+}
