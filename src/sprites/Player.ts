@@ -1,10 +1,10 @@
 import { Vector } from '../constants'
 
 export class Player {
-  private image: HTMLImageElement = new Image()
+  private playerImage: HTMLImageElement = new Image()
 
   constructor(
-    private size: number,
+    private pxSize: number,
     private position: Vector,
     private speed: number,
     private movingUp: boolean,
@@ -13,24 +13,28 @@ export class Player {
     private movingLeft: boolean,
     image: string,
   ) {
-    this.size = size
+    this.pxSize = pxSize
     this.position = position
     this.speed = speed
     this.movingUp = movingUp
     this.movingDown = movingDown
     this.movingRight = movingRight
     this.movingLeft = movingLeft
-    this.image.src = image
+    this.playerImage.src = image
 
     document.addEventListener('keydown', this.handleKeyDown)
     document.addEventListener('keyup', this.handleKeyUp)
   }
 
-  get playerSize(): number {
-    return this.size
+  get image(): HTMLImageElement {
+    return this.playerImage
   }
 
-  get playerPosition(): Vector {
+  get size(): number {
+    return this.pxSize
+  }
+
+  get pos(): Vector {
     return this.position
   }
 
