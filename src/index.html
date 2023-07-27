@@ -6,15 +6,23 @@
   </head>
   <body>
     <div id="main" class="main">
-      <div id="display">
-        <div class="levelContainer">
-          <div id="level">Level</div>
-          <div id="levelCount">1</div>
+      <div class="display">
+        <div id="gameDataContainer">
+          <div class="levelContainer">
+            <div id="level">Level</div>
+            <div id="levelCount">1</div>
+          </div>
+          <div class="buttonsContainer">
+            <button class="gameButton" id="try">Try Again</button>
+            <button class="gameButton" id="new">New Game</button>
+          </div>
         </div>
-        <div class="buttonsContainer">
-          <button class="gameButton" id="try">Try Again</button>
-          <button class="gameButton" id="new">New Game</button>
-        </div>
+        <p class="instructions">
+          Press the 'New Game' button and start to play, move with the keyboard
+          arrows and reach the top of the black box, new Level would start
+          immediately, Zoom out if you cannot see the whole black box, I'm too
+          lazy too fix it.
+        </p>
       </div>
       <canvas
         id="playField"
@@ -47,12 +55,22 @@
       border-radius: 8px;
     }
 
-    #display {
+    .display {
+      display: flex;
+      flex-direction: column;
+      width: var(--width);
+      margin-top: 90px;
+    }
+
+    .instructions {
+      font-size: 16px;
+    }
+
+    #gameDataContainer {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: var(--width);
-      padding: 10px 0;
     }
 
     .levelContainer,
