@@ -5,9 +5,9 @@ import BALL_IMAGE from './images/ball.png'
 const canvas = new CanvasView('#playField')
 const player = new Player(
   50,
-  { x: 5, y: 5 },
-  30,
-  true,
+  { x: 14, y: 30 },
+  3,
+  false,
   false,
   false,
   false,
@@ -17,7 +17,7 @@ const player = new Player(
 const gameLoop = (): void => {
   canvas.clear()
   canvas.drawSprite(player)
-
+  player.movePlayer()
   window.requestAnimationFrame(() => gameLoop())
 }
 

@@ -22,8 +22,8 @@ export class Player {
     this.movingLeft = movingLeft
     this.playerImage.src = image
 
-    document.addEventListener('keydown', this.handleKeyDown)
-    document.addEventListener('keyup', this.handleKeyUp)
+    document.addEventListener('keydown', this.handleKeyDown.bind(this))
+    document.addEventListener('keyup', this.handleKeyUp.bind(this))
   }
 
   get image(): HTMLImageElement {
@@ -40,7 +40,7 @@ export class Player {
 
   setMovingDirection(e: KeyboardEvent, isKeyDown: boolean): void {
     const key = e.code || e.key
-    if (key === 'ArrowUp') this.movingDown = isKeyDown
+    if (key === 'ArrowUp') this.movingUp = isKeyDown
     if (key === 'ArrowDown') this.movingDown = isKeyDown
     if (key === 'ArrowRight') this.movingRight = isKeyDown
     if (key === 'ArrowLeft') this.movingLeft = isKeyDown
@@ -55,8 +55,8 @@ export class Player {
   }
 
   movePlayer(): void {
-    if (this.movingUp) this.position.y += this.speed
-    if (this.movingDown) this.position.y -= this.speed
+    if (this.movingUp) this.position.y -= this.speed
+    if (this.movingDown) this.position.y += this.speed
     if (this.movingRight) this.position.x += this.speed
     if (this.movingLeft) this.position.x -= this.speed
   }
