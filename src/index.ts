@@ -1,12 +1,19 @@
 import { Ball, Player } from './sprites'
 import { CanvasView } from './view/CanvasView'
 import PLAYER_IMAGE from './images/player.png'
+import IMPOSSIBLE_PLAYER_IMAGE from './images/playerImpossible.png'
 import { Collision } from './Collision'
-import { Directions, PLAYER_SIZE, PLAYER_SPEED } from './constants'
+import {
+  Directions,
+  IMPOSSIBLE_PLAYER_SIZE,
+  PLAYER_SIZE,
+  PLAYER_SPEED,
+} from './constants'
 import { generateBalls } from './utils'
 
 const canvas = new CanvasView('#playField')
 let level = 1
+let isImpossibleMode = false
 
 const moveToNextLevel = (canvas: CanvasView) => {
   level++
@@ -40,21 +47,32 @@ const generateNewLevel = (ballsArg?: Ball[]) => {
   const canvasEl = canvas.canvas
   const balls = ballsArg || generateBalls()
   const collision = new Collision()
+  const playerBottomMargin = isImpossibleMode ? 30 : 10
+
   const player = new Player(
-    PLAYER_SIZE,
+    isImpossibleMode ? IMPOSSIBLE_PLAYER_SIZE : PLAYER_SIZE,
     {
       x: (canvasEl.width - PLAYER_SIZE) / 2,
-      y: canvasEl.height - (PLAYER_SIZE + 10),
+      y: canvasEl.height - (PLAYER_SIZE + playerBottomMargin),
     },
     PLAYER_SPEED,
-    PLAYER_IMAGE,
+    isImpossibleMode ? IMPOSSIBLE_PLAYER_IMAGE : PLAYER_IMAGE,
   )
 
   gameLoop(balls, player, canvas, collision)
 }
 
-canvas.onClickStart(() => {
+const startNewGame = (): void => {
   level = 1
   canvas.changeLevelString(level)
   generateNewLevel()
+}
+canvas.onClickStart(() => {
+  isImpossibleMode = false
+  startNewGame()
+})
+
+canvas.onClickImpossibleMode(() => {
+  isImpossibleMode = true
+  startNewGame()
 })
