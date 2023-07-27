@@ -1,5 +1,4 @@
-import { Player } from '~/sprites'
-import { Vector } from '../constants'
+import { Ball, Player } from '~/sprites'
 
 export class CanvasView {
   canvas: HTMLCanvasElement
@@ -26,7 +25,7 @@ export class CanvasView {
     this.tryAgainButton?.addEventListener('click', () => tryAgainFunction(this))
   }
 
-  drawSprite(sprite: Player): void {
+  drawSprite(sprite: Player | Ball): void {
     if (!sprite) return
 
     this.context?.drawImage(
