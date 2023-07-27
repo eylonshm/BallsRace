@@ -1,57 +1,60 @@
 import { Ball, Player } from './sprites'
 import { CanvasView } from './view/CanvasView'
-import BALL_IMAGE from './images/ball.png'
 import PLAYER_IMAGE from './images/player.png'
 import { Collision } from './Collision'
 import { Directions, PLAYER_SIZE, PLAYER_SPEED } from './constants'
-import { getRandomNumber, loop } from './utils'
+import { generateBalls } from './utils'
 
 const canvas = new CanvasView('#playField')
-const canvasEl = canvas.canvas
-const collision = new Collision()
-const player = new Player(
-  PLAYER_SIZE,
-  {
-    x: (canvasEl.width - PLAYER_SIZE) / 2,
-    y: canvasEl.height - (PLAYER_SIZE + 10),
-  },
-  PLAYER_SPEED,
-  PLAYER_IMAGE,
-)
+let level = 1
 
-const generateBalls = (): Ball[] => {
-  const numOfBalls = getRandomNumber(10, 30)
-  const BallsArr: Ball[] = []
-  loop(numOfBalls, () => {
-    const ballSize = getRandomNumber(10, 45)
-    const ballPosition = {
-      x: getRandomNumber(20, 450),
-      y: getRandomNumber(10, 500),
-    }
-    const ballSpeed = getRandomNumber(1, 4)
-    const newBall = new Ball(
-      ballSize,
-      ballPosition,
-      ballSpeed,
-      Directions.LEFT,
-      BALL_IMAGE,
-    )
-    BallsArr.push(newBall)
-  })
-  return BallsArr
+const moveToNextLevel = (canvas: CanvasView) => {
+  level++
+  canvas.changeLevelString(level)
+  generateNewLevel()
 }
 
-const balls = generateBalls()
-const gameLoop = (): void => {
+const gameLoop = (
+  balls: Ball[],
+  player: Player,
+  canvas: CanvasView,
+  collision: Collision,
+): Function | void => {
   canvas.clear()
   balls.forEach((ball) => canvas.drawSprite(ball))
-  if (!collision.isPlayerCollidingWithWalls(player, canvas)) {
-    player.movePlayer()
-  }
-  if (collision.isPlayerCollidingWithBalls(player, balls)) return
-  balls.forEach((ball) => ball.moveBall(canvas.canvas))
   canvas.drawSprite(player)
-  window.requestAnimationFrame(() => gameLoop())
+
+  const wallCollided = collision.isPlayerCollidingWithWalls(player, canvas)
+  const isWonLevel = wallCollided === Directions.UP
+
+  if (isWonLevel) return moveToNextLevel(canvas)
+  if (collision.isPlayerCollidingWithBalls(player, balls)) return
+  if (wallCollided) return
+
+  player.movePlayer()
+  balls.forEach((ball) => ball.moveBall(canvas.canvas))
+  window.requestAnimationFrame(() => gameLoop(balls, player, canvas, collision))
 }
 
-gameLoop()
+const generateNewLevel = (ballsArg?: Ball[]) => {
+  const canvasEl = canvas.canvas
+  const balls = ballsArg || generateBalls()
+  const collision = new Collision()
+  const player = new Player(
+    PLAYER_SIZE,
+    {
+      x: (canvasEl.width - PLAYER_SIZE) / 2,
+      y: canvasEl.height - (PLAYER_SIZE + 10),
+    },
+    PLAYER_SPEED,
+    PLAYER_IMAGE,
+  )
+
+  gameLoop(balls, player, canvas, collision)
+}
+
+canvas.onClickStart(() => {
+  level = 1
+  canvas.changeLevelString(level)
+  generateNewLevel()
+})
