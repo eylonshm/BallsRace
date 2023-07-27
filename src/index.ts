@@ -47,6 +47,7 @@ const gameLoop = (): void => {
   if (!collision.isPlayerCollidingWithWalls(player, canvas)) {
     player.movePlayer()
   }
+  if (collision.isPlayerCollidingWithBalls(player, balls)) return
   balls.forEach((ball) => ball.moveBall(canvas.canvas))
   canvas.drawSprite(player)
   window.requestAnimationFrame(() => gameLoop())
