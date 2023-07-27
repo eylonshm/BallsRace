@@ -2,24 +2,22 @@ import { Vector } from '../constants'
 
 export class Player {
   private playerImage: HTMLImageElement = new Image()
+  private movingDirections = {
+    up: false,
+    down: false,
+    right: false,
+    left: false,
+  }
 
   constructor(
     private pxSize: number,
     private position: Vector,
     private speed: number,
-    private movingUp: boolean,
-    private movingDown: boolean,
-    private movingRight: boolean,
-    private movingLeft: boolean,
     image: string,
   ) {
     this.pxSize = pxSize
     this.position = position
     this.speed = speed
-    this.movingUp = movingUp
-    this.movingDown = movingDown
-    this.movingRight = movingRight
-    this.movingLeft = movingLeft
     this.playerImage.src = image
 
     document.addEventListener('keydown', this.handleKeyDown.bind(this))
@@ -40,10 +38,11 @@ export class Player {
 
   setMovingDirection(e: KeyboardEvent, isKeyDown: boolean): void {
     const key = e.code || e.key
-    if (key === 'ArrowUp') this.movingUp = isKeyDown
-    if (key === 'ArrowDown') this.movingDown = isKeyDown
-    if (key === 'ArrowRight') this.movingRight = isKeyDown
-    if (key === 'ArrowLeft') this.movingLeft = isKeyDown
+    const moveDirection = this.movingDirections
+    if (key === 'ArrowUp') moveDirection.up = isKeyDown
+    if (key === 'ArrowDown') moveDirection.down = isKeyDown
+    if (key === 'ArrowRight') moveDirection.right = isKeyDown
+    if (key === 'ArrowLeft') moveDirection.left = isKeyDown
   }
 
   handleKeyDown(e: KeyboardEvent): void {
@@ -55,9 +54,10 @@ export class Player {
   }
 
   movePlayer(): void {
-    if (this.movingUp) this.position.y -= this.speed
-    if (this.movingDown) this.position.y += this.speed
-    if (this.movingRight) this.position.x += this.speed
-    if (this.movingLeft) this.position.x -= this.speed
+    const moveDirection = this.movingDirections
+    if (moveDirection.up) this.position.y -= this.speed
+    if (moveDirection.down) this.position.y += this.speed
+    if (moveDirection.right) this.position.x += this.speed
+    if (moveDirection.left) this.position.x -= this.speed
   }
 }
