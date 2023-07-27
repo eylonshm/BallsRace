@@ -1,6 +1,7 @@
 import { Ball, Player } from './sprites'
 import { CanvasView } from './view/CanvasView'
 import BALL_IMAGE from './images/ball.png'
+import PLAYER_IMAGE from './images/player.png'
 import { Collision } from './Collision'
 import { Directions, PLAYER_SIZE, PLAYER_SPEED } from './constants'
 import { getRandomNumber, loop } from './utils'
@@ -15,7 +16,7 @@ const player = new Player(
     y: canvasEl.height - (PLAYER_SIZE + 10),
   },
   PLAYER_SPEED,
-  BALL_IMAGE,
+  PLAYER_IMAGE,
 )
 
 const generateBalls = (): Ball[] => {
